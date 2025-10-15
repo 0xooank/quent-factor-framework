@@ -19,6 +19,7 @@ main.py
 #快速开始
 # 1. 克隆仓库
 git clone https://github.com/0xooank/quent-factor-framework.git
+
 cd quent-factor-framework
 
 # 2. 安装依赖
