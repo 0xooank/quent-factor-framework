@@ -342,11 +342,9 @@ def calculate_ic(context):
     date = context.current_dt.date()
     try:
         factors_df = get_factor_data(g.stock_pool, date)
-        future_date = date + pd.Timedelta(days=20)
-        prices = get_price(g.stock_pool, start_date=date,
-                           end_date=future_date, fields=['close'])
-        future_returns = (prices['close'].iloc[-1] /
-                          prices['close'].iloc[0] - 1)
+        past_date = date - pd.Timedelta(days=20)
+        prices = get_price(g.stock_pool, start_date=past_date, end_date=date, fields=['close'])
+        future_returns = (prices['close'].iloc[-1] / prices['close'].iloc[0] - 1)
         for name in g.factors.keys():
             factor_values = factors_df[name].dropna()
             if factor_values.empty:
