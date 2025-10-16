@@ -341,8 +341,8 @@ def calculate_ic(context):
     """每月计算因子IC"""
     date = context.current_dt.date()
     try:
-        factors_df = get_factor_data(g.stock_pool, date)
         past_date = date - pd.Timedelta(days=20)
+        factors_df = get_factor_data(g.stock_pool, past_date)
         prices = get_price(g.stock_pool, start_date=past_date, end_date=date, fields=['close'])
         future_returns = (prices['close'].iloc[-1] / prices['close'].iloc[0] - 1)
         for name in g.factors.keys():
@@ -350,13 +350,12 @@ def calculate_ic(context):
             if factor_values.empty:
                 continue
             common = factor_values.index.intersection(future_returns.index)
-            ic = factor_values[common].corr(
-                future_returns[common], method='spearman')
+            ic = factor_values[common].corr(future_returns[common],method='spearman')
             # 更新IC历史
             if name not in g.ic_history:
                 g.ic_history[name] = []
             g.ic_history[name].append(ic)
-            g.ic_history[name] = g.ic_history[name][-24:]
+            g.ic_history[name] = g.ic_history[name][-24:]  # 保留24个月
             # 记录指标
             record(**{f'ic_{name}': ic})
             if len(g.ic_history[name]) >= 6:
