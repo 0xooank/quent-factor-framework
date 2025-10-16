@@ -192,7 +192,6 @@ def rebalance(context):
         # ===== 第六步：风控检查 =====
         risk_check = g.risk_manager.pre_trade_check(
             target_positions,
-            context.portfolio.positions,
             g.stock_pool,
             date
         )
@@ -382,7 +381,7 @@ class RiskManager:
             'max_style_exposure': 1.0     # 风格因子暴露限制
         }
 
-    def pre_trade_check(self, target_weights, current_positions, stock_pool, date):
+    def pre_trade_check(self, target_weights, stock_pool, date):
         """交易前风控检查"""
         violations = []
         # 1. 单股集中度
