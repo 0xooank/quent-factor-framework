@@ -375,7 +375,6 @@ class RiskManager:
         self.position_limits = {
             'max_single_stock': 0.15,      # 单股最大15%
             'max_industry': 0.20,          # 单行业最大20%
-            'max_style_exposure': 1.0     # 风格因子暴露限制
         }
 
     def pre_trade_check(self, target_weights, stock_pool, date):
