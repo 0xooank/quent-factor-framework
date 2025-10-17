@@ -508,7 +508,10 @@ class BarraStyleRiskModel:
         """对因子进行中性化：默认 风格 + 行业（可选）factor_data: Series(index=code),style_exposures: DataFrame(index=code, cols=[size,value,...])"""
         common = factor_data.index.intersection(style_exposures.index)
         y = factor_data.loc[common].astype(float)
+        y = self._standardize(y)
         X = style_exposures.loc[common].astype(float)
+        X = pd.DataFrame({s: self._standardize(X[s]) for s in X.columns}, index=X.index)
+
 
         # 添加行业哑变量
         if include_industry and (date is not None):
